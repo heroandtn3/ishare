@@ -36,7 +36,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ishare'
+    # 3rd-party apps
+    'widget_tweaks',
+
+    # our apps
+    'ishare',
+    'account',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,3 +87,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Account setting
+LOGIN_URL = '/account/login/'
+LOGOUT_URL = '/account/logout/'
+LOGIN_REDIRECT_URL = '/account/profile/'
