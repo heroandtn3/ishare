@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from account.forms import LoginForm
+
 
 @login_required
 def index(request):
@@ -14,7 +16,6 @@ def index(request):
 
 
 def register(request):
-    error_msg = None
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -28,26 +29,22 @@ def register(request):
     return render(request, 'account/register.html', {'form': form})
 
 def login(request):
-    error_msg = None
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                log_user_in(request, user)
-                # Redirect to a success page.
-                next_url = request.POST['next']
-                if next_url:
-                    return HttpResponseRedirect(next_url)
-                else:
-                    return HttpResponseRedirect(reverse('ishare:index'))
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            print('user:', user)
+            log_user_in(request, user)
+            # Redirect to a success page.
+            next_url = request.POST.get('next')
+            if next_url:
+                return HttpResponseRedirect(next_url)
             else:
-                error_msg = 'Your account is disabled.'
-        else:
-            error_msg= 'Invalid login.'
+                return HttpResponseRedirect(reverse('ishare:index'))
+    else:
+        form = LoginForm()
 
-    return render(request, 'account/login.html', {'error_msg': error_msg})
+    return render(request, 'account/login.html', {'form': form})
 
 
 def logout(request):

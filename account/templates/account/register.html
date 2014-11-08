@@ -7,13 +7,13 @@
       <form role="form" class="form-horizontal" method="POST" action="{% url 'account:register' %}">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            {% if error_msg %}
               <div class="text-danger">{{ form.non_field_errors }}</div>
-            {% endif %}
           </div>
         </div>
+        {% endif %}
 
         {% for field in form %}
         <div class="form-group">
@@ -32,14 +32,12 @@
         </div>
         {% endfor %}
         
-        
-
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-primary">Register</button>
           </div>
         </div>
-      </form>
+      </form><!--/RegisterForm-->
     </div>
   </div>
 

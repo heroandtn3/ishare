@@ -1,11 +1,9 @@
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 
-class RegisterForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=254, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
