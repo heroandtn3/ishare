@@ -17,6 +17,9 @@ class Entity(models.Model):
 
     creator = models.ForeignKey(User)
 
+    def __str__(self):
+        return '%s: %s' % (self. entity_type, self.id)
+
 
 class Album(models.Model):
     title = models.CharField(max_length=255)
@@ -27,6 +30,8 @@ class Album(models.Model):
             'entity_type': Entity.ALBUM
         })
 
+    def __str__(self):
+        return self.title
 
 class Image(models.Model):
     title = models.CharField(max_length=255)
@@ -38,6 +43,9 @@ class Image(models.Model):
         })
     album = models.ForeignKey(Album)
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     content = models.TextField()
@@ -48,6 +56,9 @@ class Comment(models.Model):
         })
     target_entity = models.ForeignKey(Entity, related_name='+')
 
+    def __str__(self):
+        return self.id
+
 
 class Vote(models.Model):
     is_vote_up = models.BooleanField(default=True)
@@ -55,3 +66,6 @@ class Vote(models.Model):
 
     creator = models.ForeignKey(User)
     target_entity = models.ForeignKey(Entity, related_name='+')
+
+    def __str__(self):
+        return self.id
