@@ -26,9 +26,9 @@ class Album(models.Model):
     private = models.BooleanField(default=False)
     last_modified_date = models.DateTimeField(auto_now=True)
 
-    entity = models.ForeignKey(Entity, limit_choices_to={
+    entity = models.OneToOneField(Entity, limit_choices_to={
             'entity_type': Entity.ALBUM
-        })
+        }, primary_key=True)
 
     def __str__(self):
         return self.title
@@ -38,9 +38,9 @@ class Image(models.Model):
     last_modified_date = models.DateTimeField(auto_now=True)
     photo = models.ImageField(upload_to='photos')
 
-    entity = models.ForeignKey(Entity, limit_choices_to={
+    entity = models.OneToOneField(Entity, limit_choices_to={
             'entity_type': Entity.IMAGE
-        })
+        }, primary_key=True)
     album = models.ForeignKey(Album)
 
     def __str__(self):
@@ -51,9 +51,9 @@ class Comment(models.Model):
     content = models.TextField()
     last_modified_date = models.DateTimeField(auto_now=True)
 
-    entity = models.ForeignKey(Entity, limit_choices_to={
+    entity = models.OneToOneField(Entity, limit_choices_to={
             'entity_type': Entity.COMMENT
-        })
+        }, primary_key=True)
     target_entity = models.ForeignKey(Entity, related_name='+')
 
     def __str__(self):
@@ -64,7 +64,7 @@ class Vote(models.Model):
     is_vote_up = models.BooleanField(default=True)
     create_date = models.DateTimeField(auto_now_add=True)
 
-    creator = models.ForeignKey(User)
+    creator = models.OneToOneField(User)
     target_entity = models.ForeignKey(Entity, related_name='+')
 
     def __str__(self):
