@@ -55,3 +55,4 @@ target/
 
 # Django
 db.sqlite3
+photos/
