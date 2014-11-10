@@ -5,18 +5,14 @@
   <div class="col-md-12">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">Ảnh gần đây</h3>
+        <h3 class="panel-title">{{ image.title }}</h3>
         
       </div>
       <div class="panel-body">
         <div class="row">
-        {% for img in recent_images %}
-          <div class="col-md-3">
-            <a href="{% url 'ishare:photo_detail' img.pk %}">
-              <img src="{% url 'ishare:photo_direct' img.pk %}" title="{{ img.title }}">
-            </a>
+          <div class="col-md-12">
+            <img src="{% url 'ishare:photo_direct' image.pk %}">
           </div>
-        {% endfor %}
         </div>
 
       </div>
