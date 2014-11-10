@@ -22,10 +22,10 @@ class UploadImageForm(forms.ModelForm):
     def save(self, commit=True):
         image = super(UploadImageForm, self).save(commit=False)
         image.title = image.photo.name
-        entity = Entity(entity_type=Entity.IMAGE, creator=self.user)
-        image.entity = entity
         if commit:
+            entity = Entity(entity_type=Entity.IMAGE, creator=self.user)
             entity.save()
+            image.entity = entity
             image.save()
         return image
 
