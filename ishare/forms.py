@@ -49,9 +49,10 @@ class CreateAlbumForm(forms.ModelForm):
 
     def save(self, commit=True):
         album = super(CreateAlbumForm, self).save(commit=False)
-        entity = Entity(entity_type=Entity.ALBUM, creator=self.user)
-        album.entity = entity
+        
         if commit:
+            entity = Entity(entity_type=Entity.ALBUM, creator=self.user)
             entity.save()
+            album.entity = entity
             album.save()
         return album
