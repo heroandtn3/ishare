@@ -14,4 +14,7 @@ urlpatterns = patterns('',
     
     url(r'^img/direct/(?P<photo_id>\d+)/$',
         views.photo_direct, name='photo_direct'),
+
+    url(r'^album/(?P<album_id>\d+)/$',
+        views.album_detail, name='album_detail'),
 )

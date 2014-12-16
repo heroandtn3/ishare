@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
 
 from ishare.forms import UploadImageForm, CreateAlbumForm
-from ishare.models import Entity, Image
+from ishare.models import Entity, Image, Album
 from ishare import dao
 
 def index(request):
@@ -57,3 +57,10 @@ def photo_detail(request, photo_id):
         'image': image,
     }
     return render(request, 'ishare/photo_detail.html', context)
+
+def album_detail(request, album_id):
+    album = get_object_or_404(Album, pk=album_id)
+    context = {
+        'album': album
+    }
+    return render(request, 'ishare/album_detail.html', context)
