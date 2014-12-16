@@ -2,9 +2,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.templatetags.static import static
 
 from ishare.forms import UploadImageForm, CreateAlbumForm
 from ishare.models import Entity, Image
+from ishare import dao
 
 def index(request):
     recent_images = Image.objects.order_by('entity__create_date')[:20]
@@ -28,6 +30,7 @@ def upload(request):
 
 @login_required
 def albums(request):
+    context = {}
     if request.method == 'POST':
         form = CreateAlbumForm(request.POST, user=request.user)
         if form.is_valid():
@@ -35,7 +38,10 @@ def albums(request):
             return HttpResponseRedirect(reverse('ishare:index'))
     else:
         form = CreateAlbumForm()
-    return render(request, 'ishare/albums.html', {'form': form})
+        recent_albums = dao.get_user_albums(request.user)
+        context['recent_albums'] = recent_albums
+    context['form'] = form
+    return render(request, 'ishare/albums.html', context)
 
 
 def photo_direct(request, photo_id):
