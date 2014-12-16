@@ -47,7 +47,7 @@
             <img src="{{ album.thumbnail_url }}" class="img-rounded" alt="{{ album.title }}">
             <div class="caption">
               <a href="#">{{ album.title }}</a>
-              <p class="text-muted">{{ album.image_set.all|length }} photos</p>
+              <p class="text-muted">{{ album.image_set.count }} photos</p>
             </div>
           </div>
         {% endfor %}

@@ -40,7 +40,6 @@ class Album(models.Model):
             first_image = self.image_set.all()[0]
             return reverse('ishare:photo_direct', args=(first_image.pk,))
         else:
-            # TODO: return static url
             return static('ishare/images/default.png')
 
 class Image(models.Model):
