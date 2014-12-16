@@ -1,3 +1,5 @@
+from django.core.urlresolvers import reverse
+from django.templatetags.static import static
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -32,6 +34,14 @@ class Album(models.Model):
 
     def __str__(self):
         return '%s - %s' % (self.entity.id, self.title)
+
+    def thumbnail_url(self):
+        if self.image_set.count() > 0:
+            first_image = self.image_set.all()[0]
+            return reverse('ishare:photo_direct', args=(first_image.pk,))
+        else:
+            # TODO: return static url
+            return static('ishare/images/default.png')
 
 class Image(models.Model):
     title = models.CharField(max_length=255)

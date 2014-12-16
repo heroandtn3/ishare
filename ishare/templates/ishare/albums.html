@@ -4,6 +4,7 @@
 {% block content %}
   <div class="row">
     <div class="col-md-12">
+      <!--============CreateAlbumForm============-->
       <form role="form" class="form-horizontal" method="POST" action="{% url 'ishare:albums' %}">
         {% csrf_token %}
 
@@ -38,6 +39,21 @@
           </div>
         </div>
       </form><!--/CreateAlbumForm-->
+
+      <!--============Album list============-->
+      {% if recent_albums %}
+        {% for album in recent_albums %}
+          <div class="thumbnail">
+            <img src="{{ album.thumbnail_url }}" class="img-rounded" alt="{{ album.title }}">
+            <div class="caption">
+              <a href="#">{{ album.title }}</a>
+              <p class="text-muted">{{ album.image_set.all|length }} photos</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h3>You have no album</h3>
+      {% endif %}
     </div>
   </div>
 
