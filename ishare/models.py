@@ -35,6 +35,9 @@ class Album(models.Model):
     def __str__(self):
         return '%s - %s' % (self.entity.id, self.title)
 
+    def image_number(self):
+        return self.image_set.count()
+
     def thumbnail_url(self):
         if self.image_set.count() > 0:
             first_image = self.image_set.all()[0]
@@ -55,6 +58,15 @@ class Image(models.Model):
     def __str__(self):
         return '%s - %s' % (self.entity.id, self.title)
 
+    def comment_number(self):
+        return self.entity.comments.count()
+
+    def voteup_number(self):
+        return self.entity.vote_set.filter(is_vote_up=True).count()
+
+    def votedown_number(self):
+        return self.entity.vote_set.filter(is_vote_up=False).count()
+
 
 class Comment(models.Model):
     content = models.TextField()
@@ -62,8 +74,8 @@ class Comment(models.Model):
 
     entity = models.OneToOneField(Entity, limit_choices_to={
             'entity_type': Entity.COMMENT
-        }, primary_key=True)
-    target_entity = models.ForeignKey(Entity, related_name='+')
+        }, primary_key=True, related_name='+')
+    target_entity = models.ForeignKey(Entity, related_name='comments')
 
     def __str__(self):
         return self.id
@@ -74,7 +86,7 @@ class Vote(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
 
     creator = models.OneToOneField(User)
-    target_entity = models.ForeignKey(Entity, related_name='+')
+    target_entity = models.ForeignKey(Entity)
 
     def __str__(self):
         return self.id

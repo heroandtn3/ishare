@@ -9,9 +9,11 @@ from ishare.models import Entity, Image
 from ishare import dao
 
 def index(request):
-    recent_images = Image.objects.order_by('entity__create_date')[:20]
+    recent_images = dao.get_recent_images()
+    recent_albums = dao.get_recent_albums()
     context = {
         'recent_images': recent_images,
+        'recent_albums': recent_albums
     }
     return render(request, 'ishare/index.html', context)
 
