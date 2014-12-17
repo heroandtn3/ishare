@@ -12,3 +12,8 @@
     width: 200px;
     height: 120px;
 }
+
+#comment-list {
+    max-height: 300px;
+    overflow: auto;
+}

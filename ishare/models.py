@@ -67,6 +67,9 @@ class Image(models.Model):
     def votedown_number(self):
         return self.entity.vote_set.filter(is_vote_up=False).count()
 
+    def recent_comments(self):
+        return self.entity.comments.all()
+
 
 class Comment(models.Model):
     content = models.TextField()
@@ -78,7 +81,7 @@ class Comment(models.Model):
     target_entity = models.ForeignKey(Entity, related_name='comments')
 
     def __str__(self):
-        return self.id
+        return '%s' % self.pk
 
 
 class Vote(models.Model):
@@ -89,4 +92,4 @@ class Vote(models.Model):
     target_entity = models.ForeignKey(Entity)
 
     def __str__(self):
-        return self.id
+        return '%s' % self.pk

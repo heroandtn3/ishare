@@ -18,6 +18,10 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" type="text/css" href="{% static 'ishare/styles.css' %}">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'ishare/js/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'ishare/bootstrap/js/bootstrap.min.js' %}"></script>
     {% block headerinclude %}{% endblock %}
   </head>
   <body>
@@ -26,10 +30,5 @@
       {% block content %}{% endblock %}
       {% include 'ishare/footer.html' %}
     </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{% static 'ishare/js/jquery.min.js' %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'ishare/bootstrap/js/bootstrap.min.js' %}"></script>
   </body>
 </html>
