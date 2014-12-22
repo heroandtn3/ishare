@@ -56,7 +56,9 @@ def photo_direct(request, photo_id):
 
 def photo_detail(request, photo_id):
     image = get_object_or_404(Image, pk=photo_id)
-    vote = image.is_voted(request.user)
+    vote = None
+    if request.user.is_authenticated():
+        vote = image.is_voted(request.user)
     context = {
         'image': image,
         'is_vote_up': vote.is_vote_up if vote else None

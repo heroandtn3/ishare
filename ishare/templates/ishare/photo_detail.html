@@ -6,6 +6,7 @@
     <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">{{ image.title }}
+        {% if user.is_authenticated %}
         <div class="btn-group btn-group-xs pull-right" role="group">
           <button id="voteup-btn" type="button" class="btn btn-success" {% if is_vote_up == True %} disabled="disabled" {% endif %}>
             <span class="glyphicon glyphicon-thumbs-up"></span> <span id="voteup-number">{{ image.voteup_number }}</span>
@@ -14,7 +15,7 @@
             <span class="glyphicon glyphicon-thumbs-down"></span> <span id="votedown-number">{{ image.votedown_number }}</span>
           </button>
         </div>
-          
+        {% endif %} 
         </h3>
         
       </div>
