@@ -21,6 +21,9 @@ urlpatterns = patterns('',
     url(r'^img/json/send_comment/(?P<photo_id>\d+)/$',
         views.photo_json_send_comment, name='photo_json_send_comment'),
 
+    url(r'^img/json/vote/(?P<photo_id>\d+)/$',
+        views.photo_json_vote, name='photo_json_vote'),
+
     url(r'^album/(?P<album_id>\d+)/$',
         views.album_detail, name='album_detail'),
 )

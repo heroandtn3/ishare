@@ -5,7 +5,17 @@
   <div class="col-md-8">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h3 class="panel-title">{{ image.title }}</h3>
+        <h3 class="panel-title">{{ image.title }}
+        <div class="btn-group btn-group-xs pull-right" role="group">
+          <button id="voteup-btn" type="button" class="btn btn-success" {% if is_vote_up == True %} disabled="disabled" {% endif %}>
+            <span class="glyphicon glyphicon-thumbs-up"></span> <span id="voteup-number">{{ image.voteup_number }}</span>
+          </button>
+          <button id="votedown-btn" type="button" class="btn btn-danger" {% if is_vote_up == False %} disabled="disabled" {% endif %}>
+            <span class="glyphicon glyphicon-thumbs-down"></span> <span id="votedown-number">{{ image.votedown_number }}</span>
+          </button>
+        </div>
+          
+        </h3>
         
       </div>
       <div class="panel-body">
@@ -144,6 +154,38 @@
       });
     }
   });
+
+  // vote section
+  var voteUpBtn = $('button#voteup-btn');
+  var voteDownBtn = $('button#votedown-btn');
+  var voteUpText = $('span#voteup-number');
+  var voteDownText = $('span#votedown-number');
+
+  function sendVote(isVoteUp) {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'ishare:photo_json_vote' image.pk %}",
+      data: { is_vote_up: isVoteUp ? 1 : 0 },
+      success: function (res) {
+        console.log(res);
+        if (res.hasOwnProperty('error')) {
+          alert(res.error.msg);
+        } else {
+          voteUpText.text(res.voteUpNumber);
+          voteDownText.text(res.voteDownNumber);
+          if (isVoteUp) {
+            voteUpBtn.attr('disabled', 'disabled');
+            voteDownBtn.removeAttr('disabled');
+          } else {
+            voteDownBtn.attr('disabled', 'disabled');
+            voteUpBtn.removeAttr('disabled');
+          }
+        }
+      }
+    });
+  }
+  voteUpBtn.click(function () { sendVote(true); });
+  voteDownBtn.click(function () { sendVote(false); });
 
 </script>
 {% endblock %}

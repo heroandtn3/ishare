@@ -70,6 +70,12 @@ class Image(models.Model):
     def recent_comments(self):
         return self.entity.comments.all()
 
+    def is_voted(self, user):
+        if self.entity.vote_set.filter(creator=user).exists():
+            return self.entity.vote_set.filter(creator=user)[0]
+        else:
+            return None
+
 
 class Comment(models.Model):
     content = models.TextField()
@@ -88,7 +94,7 @@ class Vote(models.Model):
     is_vote_up = models.BooleanField(default=True)
     create_date = models.DateTimeField(auto_now_add=True)
 
-    creator = models.OneToOneField(User)
+    creator = models.ForeignKey(User)
     target_entity = models.ForeignKey(Entity)
 
     def __str__(self):

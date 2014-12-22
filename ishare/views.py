@@ -8,7 +8,7 @@ from django.core import serializers
 import json
 
 from ishare.forms import UploadImageForm, CreateAlbumForm
-from ishare.models import Entity, Image, Album, Comment
+from ishare.models import Entity, Image, Album, Comment, Vote
 from ishare import dao
 
 def index(request):
@@ -56,8 +56,10 @@ def photo_direct(request, photo_id):
 
 def photo_detail(request, photo_id):
     image = get_object_or_404(Image, pk=photo_id)
+    vote = image.is_voted(request.user)
     context = {
         'image': image,
+        'is_vote_up': vote.is_vote_up if vote else None
     }
     return render(request, 'ishare/photo_detail.html', context)
 
@@ -99,6 +101,39 @@ def photo_json_send_comment(request, photo_id):
             comment.save()
             data = dao.comment_to_json(comment)
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+def photo_json_vote(request, photo_id):
+    if request.method == 'GET':
+        return HttpResponse('Not support method')
+
+    if not request.user.is_authenticated():
+        data = {
+            'error': {
+                'code': 1,
+                'msg': 'You are not logon!'
+            }
+        }
+    else:
+        image = get_object_or_404(Image, pk=photo_id)
+        is_vote_up = request.POST.get('is_vote_up') == '1'
+        print(request.POST.get('is_vote_up'))
+        vote = image.is_voted(request.user)
+        if vote:
+            if vote.is_vote_up != is_vote_up:
+                vote.is_vote_up = is_vote_up
+                vote.save()
+        else:
+            vote = Vote(is_vote_up=is_vote_up, 
+                        creator=request.user, 
+                        target_entity=image.entity)
+            vote.save()
+        
+        data = {
+            'voteUpNumber': image.voteup_number(),
+            'voteDownNumber': image.votedown_number(),
+        }
+    return HttpResponse(json.dumps(data), content_type="application/json")
+
 
 def album_detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
