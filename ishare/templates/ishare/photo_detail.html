@@ -33,32 +33,51 @@
   <div class="col-md-4">
     <div class="panel panel-info">
       <div class="panel-heading">
+        <h3 class="panel-title">Information</h3>
+      </div>
+      <div class="panel-body">
+        Uploader: {{ image.entity.creator.username }}
+        <hr />
+        Title: {{ image.title }}
+        <hr />
+        Views: {{ image.views }}
+        <hr />
+        Album: {{ image.album.title }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-info">
+      <div class="panel-heading">
         <h3 class="panel-title">Comments</h3>
         
       </div>
       <div class="panel-body">
         <ul class="list-group" id="comment-list"></ul>
-        {% if user.is_authenticated %}
-        <div id="comment-box">
-          <form role="form">
-            <div id="menu" class="input-group">
-              <textarea style="resize: none;" id="message" rows="2" class="form-control" placeholder="Enter message..." autofocus></textarea>
-              <span class="input-group-addon">
-                <button id="send-btn" class="btn btn-primary" type="button">
-                  Send
-                </button>
-              </span>
-            </div>
-          </form>
-        </div>
-        {% else %}
-          <a href="{% url 'account:login' %}">Login to comment</a>
-        {% endif %}
-        
       </div>
     </div>
+    {% if user.is_authenticated %}
+    <div id="comment-box">
+      <form role="form">
+        <div id="menu" class="input-group">
+          <textarea style="resize: none;" id="message" rows="2" class="form-control" placeholder="Enter message..." autofocus></textarea>
+          <span class="input-group-addon">
+            <button id="send-btn" class="btn btn-primary" type="button">
+              Send
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+    {% else %}
+    <a href="{% url 'account:login' %}">Login to comment</a>
+    {% endif %}
   </div><!--/Comment box-->
 </div>
+
 <script type="text/javascript">
   // using jQuery
   function getCookie(name) {

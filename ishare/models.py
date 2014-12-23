@@ -49,6 +49,7 @@ class Image(models.Model):
     title = models.CharField(max_length=255)
     last_modified_date = models.DateTimeField(auto_now=True)
     photo = models.ImageField(upload_to='photos')
+    views = models.IntegerField(default=0)
 
     entity = models.OneToOneField(Entity, limit_choices_to={
             'entity_type': Entity.IMAGE
