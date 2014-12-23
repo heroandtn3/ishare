@@ -45,22 +45,23 @@
       </div>
     </div><!--/Information-->
 
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Comments</h3>
-        
-      </div>
-      <div class="panel-body">
-        <ul class="list-group" id="comment-list"></ul>
-      </div>
-    </div>
+    <ul class="list-group" id="comment-list">
+      <li class="list-group-item active">Comments</li>
+      {% for comment in image.recent_comments %}
+      <li class="list-group-item">
+        <b><a href="#">{{ comment.entity.creator.username }}</a>: </b><span>{{ comment.content }}</span>
+      </li>
+      {% empty %}
+      <li class="list-group-item">No comment</li>
+      {% endfor %}
+    </ul>
     {% if user.is_authenticated %}
     <div id="comment-box">
       <form role="form">
         <div id="menu" class="input-group">
           <textarea style="resize: none;" id="message" rows="2" class="form-control" placeholder="Enter message..." autofocus></textarea>
           <span class="input-group-addon">
-            <button id="send-btn" class="btn btn-primary" type="button">
+            <button id="send-btn" class="btn btn-success" type="button">
               Send
             </button>
           </span>
@@ -68,7 +69,7 @@
       </form>
     </div>
     {% else %}
-    <a href="{% url 'account:login' %}">Login to comment</a>
+    <p>You must <a class="btn btn-primary" role="button" href="{% url 'account:login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a> to comment</p>
     {% endif %}<!--/Comment box-->
   </div>
 </div>
@@ -133,7 +134,7 @@
   }
 
   function createCommentItem(comment) {
-    var user = $('<a>').attr('href', '/u/' + comment.creator.id).text(comment.creator.name);
+    var user = $('<b>').append($('<a>').attr('href', '/u/' + comment.creator.id).text(comment.creator.name));
     var message = $('<span>').text(': ' + comment.content);
     var item = $('<li>').addClass('list-group-item').append(user).append(message);
     return item;
@@ -144,17 +145,7 @@
   var commentBox = $('#comment-box');
   var sendBtn = $('button#send-btn');
   var message = $('textarea#message');
-  $.ajax({
-    type: "GET",
-    url: "{% url 'ishare:photo_json_recent_comment' image.pk %}",
-    success: function (res) {
-      console.log(res);
-      for (var i = 0; i < res.length; i++) {
-        var comment = res[i];
-        commentList.append(createCommentItem(comment));
-      }
-    }
-  });
+
   sendBtn.click(function () {
     var msg = message.val().trim();
     if (msg) {
