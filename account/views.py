@@ -6,8 +6,10 @@ from django.contrib.auth import logout as log_user_out
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
-from account.forms import LoginForm
+from account.forms import LoginForm, ChangePasswordForm
 
 
 @login_required
@@ -52,5 +54,26 @@ def logout(request):
     return HttpResponseRedirect(reverse('ishare:index'))
 
 
+@login_required
 def profile(request):
-    return HttpResponse('Profile')
+    context = {
+        'change_password_form': ChangePasswordForm(user=request.user)
+    }
+    return render(request, 'account/profile.html', context)
+
+@login_required
+def password_change(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.add_message(request, messages.INFO, 
+                message='Change password successful!',
+                extra_tags='alert alert-success')
+        else:
+            messages.add_message(request, messages.INFO, 
+                message='Change password unsuccessful! Please try again.',
+                extra_tags='alert alert-danger')
+    
+    return HttpResponseRedirect(reverse('account:profile'))
