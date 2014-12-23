@@ -27,7 +27,7 @@
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li><a href="{% url 'ishare:albums' %}">Albums</a></li>
-        <li><a href="{% url 'ishare:upload' %}">Upload</a></li>
+        <li><a href="{% url 'ishare:upload' %}"><span class="glyphicon glyphicon-cloud-upload"></span> Upload</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ user.username }} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

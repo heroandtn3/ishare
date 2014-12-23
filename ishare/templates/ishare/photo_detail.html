@@ -22,7 +22,7 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-12">
-            <img style="max-width: 100%" src="{% url 'ishare:photo_direct' image.pk %}">
+            <a href="{% url 'ishare:photo_direct' image.pk %}" target="_blank"><img style="width: 100%" src="{% url 'ishare:photo_direct' image.pk %}"></a>
           </div>
         </div>
 
@@ -36,20 +36,15 @@
         <h3 class="panel-title">Information</h3>
       </div>
       <div class="panel-body">
-        Uploader: {{ image.entity.creator.username }}
-        <hr />
-        Title: {{ image.title }}
-        <hr />
-        Views: {{ image.views }}
-        <hr />
-        Album: {{ image.album.title }}
+        <ul class="list-inline">
+          <li><span class="glyphicon glyphicon-user"></span> {{ image.entity.creator.username }}</li>
+          <li><span class="glyphicon glyphicon-eye-open"></span> {{ image.views }} views</li>
+          <li><span class="glyphicon glyphicon-picture"></span> {{ image.album.title }}
+          </li>
+        </ul>
       </div>
-    </div>
-  </div>
-</div>
+    </div><!--/Information-->
 
-<div class="row">
-  <div class="col-md-8">
     <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">Comments</h3>
@@ -74,8 +69,14 @@
     </div>
     {% else %}
     <a href="{% url 'account:login' %}">Login to comment</a>
-    {% endif %}
-  </div><!--/Comment box-->
+    {% endif %}<!--/Comment box-->
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    
+  </div>
 </div>
 
 <script type="text/javascript">
