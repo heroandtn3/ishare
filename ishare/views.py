@@ -30,6 +30,8 @@ def upload(request):
             return HttpResponseRedirect(reverse('ishare:index'))
     else:
         form = UploadImageForm()
+        form.fields['album'].queryset = Album.objects.filter(
+            entity__creator=request.user)
     return render(request, 'ishare/upload.html', {'form': form})
 
 
